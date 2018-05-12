@@ -10,10 +10,13 @@ const store = createStore(rootReducer, applyMiddleware(thunk));
 
 export default () => (
   <Provider store={store}>
-    <SafeAreaView style={{
-    flex: 1,
-    backgroundColor: '#777'}}>
-      <AppNavigator />
-    </SafeAreaView>
+    {/* <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: '#777'
+      }}
+    > */}
+    <AppNavigator />
+    {/* </SafeAreaView> */}
   </Provider>
 );

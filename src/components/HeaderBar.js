@@ -73,13 +73,13 @@ export class HeaderBar extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.headerBar}>
-          <TouchableOpacity style={styles.hamburgerContainer} onPress={this.openDrawer}>
+          {/* <TouchableOpacity style={styles.hamburgerContainer} onPress={this.openDrawer}>
             <Image style={styles.hamburger} source={require('../../assets/hamburger.png')} />
-          </TouchableOpacity>
-          <Text style={styles.headerText}>
+          </TouchableOpacity> */}
+          {/* <Text style={styles.headerText}>
             {currentFile || 'JS Code Run'}
             {currentFile && this.props.isEdited && '*'}
-          </Text>
+          </Text> */}
           <View style={styles.toolBar}>
             <TouchableOpacity style={styles.saveContainer} onPress={() => this.onQuickSave()}>
               <Image style={styles.saveButton} source={require('../../assets/save-icon.png')} />

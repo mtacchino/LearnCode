@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import renderer from 'react-test-renderer';
-import { MainScreen } from './MainScreen';
+import { CodeScreen } from './CodeScreen';
 
 jest.mock('../components/CodeEditor', () => 'CodeEditor');
 jest.mock('../components/Output', () => 'Output');
 jest.mock('../components/HeaderBar', () => 'HeaderBar');
 
-describe('MainScreen', () => {
+describe('CodeScreen', () => {
   it('should render correctly', () => {
-    const rendered = renderer.create(<MainScreen />).toJSON();
+    const rendered = renderer.create(<CodeScreen />).toJSON();
     expect(rendered).toMatchSnapshot();
   });
 
   describe('runCode', () => {
     it('should produce a single output when code is logged', () => {
-      const instance = renderer.create(<MainScreen />).getInstance();
+      const instance = renderer.create(<CodeScreen />).getInstance();
       instance.setState({
         code: 'console.log("Test output")'
       });
@@ -29,7 +29,7 @@ describe('MainScreen', () => {
     });
 
     it('should produce an array of a multiple outputs when code is logged', () => {
-      const instance = renderer.create(<MainScreen />).getInstance();
+      const instance = renderer.create(<CodeScreen />).getInstance();
       instance.setState({
         code: 'console.log("Test output"); console.log("More output");'
       });
@@ -48,7 +48,7 @@ describe('MainScreen', () => {
     });
 
     it('should produce an error output when code errors', () => {
-      const instance = renderer.create(<MainScreen />).getInstance();
+      const instance = renderer.create(<CodeScreen />).getInstance();
       instance.setState({
         code: 'badcode'
       });
@@ -63,7 +63,7 @@ describe('MainScreen', () => {
     });
 
     it('should produce Infinity when 1/0 is logged', () => {
-      const instance = renderer.create(<MainScreen />).getInstance();
+      const instance = renderer.create(<CodeScreen />).getInstance();
       instance.setState({
         code: 'console.log(1/0)'
       });
@@ -78,7 +78,7 @@ describe('MainScreen', () => {
     });
 
     it('should produce NaN when undefined/1 is logged', () => {
-      const instance = renderer.create(<MainScreen />).getInstance();
+      const instance = renderer.create(<CodeScreen />).getInstance();
       instance.setState({
         code: 'console.log(undefined/1)'
       });
@@ -93,7 +93,7 @@ describe('MainScreen', () => {
     });
 
     it('should produce an object when one is logged', () => {
-      const instance = renderer.create(<MainScreen />).getInstance();
+      const instance = renderer.create(<CodeScreen />).getInstance();
       instance.setState({
         code: 'console.log({ a: 1, b: NaN, c: { d: undefined, "e": "hello" } })'
       });
@@ -108,7 +108,7 @@ describe('MainScreen', () => {
     });
 
     it('should produce an array when one is logged', () => {
-      const instance = renderer.create(<MainScreen />).getInstance();
+      const instance = renderer.create(<CodeScreen />).getInstance();
       instance.setState({
         code: 'console.log([1, 2, 3])'
       });
@@ -123,7 +123,7 @@ describe('MainScreen', () => {
     });
 
     it('should produce an object with arrays when one is logged', () => {
-      const instance = renderer.create(<MainScreen />).getInstance();
+      const instance = renderer.create(<CodeScreen />).getInstance();
       instance.setState({
         code: 'console.log([{a:1, b:[{c:[3]},5]}, 3,{}])'
       });

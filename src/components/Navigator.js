@@ -1,7 +1,8 @@
 import React from 'react';
-import { DrawerNavigator, NavigationActions, DrawerItems } from 'react-navigation';
+import { DrawerNavigator, createStackNavigator, NavigationActions, DrawerItems } from 'react-navigation';
 import { View, Image, StyleSheet } from 'react-native';
-import MainScreen from '../screens/MainScreen';
+import ChallengeListScreen from '../screens/ChallengeListScreen';
+import CodeScreen from '../screens/CodeScreen';
 import DrawerMenu from './DrawerMenu';
 
 const styles = StyleSheet.create({
@@ -13,7 +14,8 @@ const styles = StyleSheet.create({
 });
 
 export const ScreenNames = {
-  HOME_SCREEN: 'Home',
+  HOME_SCREEN: 'Challenges',
+  CODE_SCREEN: 'Code',
   EXAMPLES_SCREEN: 'EXAMPLES',
   ABOUT_SCREEN: 'ABOUT',
   FILE_OPEN_SCREEN: 'OPEN',
@@ -25,38 +27,63 @@ const drawerNavigatorConfig = {
   drawerWidth: 270
 };
 
-export default DrawerNavigator(
+export default createStackNavigator(
   {
     [ScreenNames.HOME_SCREEN]: {
-      screen: MainScreen,
+      screen: ChallengeListScreen,
       navigationOptions: () => ({
-        drawerLabel: () => null
+        title: 'Challenges'
       })
     },
-    [ScreenNames.FILE_OPEN_SCREEN]: {
-      screen: MainScreen,
-      navigationOptions: () => ({
-        drawerIcon: () => <Image source={require('../../assets/open-icon.png')} style={styles.icon} />
-      })
-    },
-    [ScreenNames.FILE_SAVE_AS_SCREEN]: {
-      screen: MainScreen,
-      navigationOptions: () => ({
-        drawerIcon: () => <Image source={require('../../assets/save-icon.png')} style={styles.icon} />
-      })
-    },
-    [ScreenNames.EXAMPLES_SCREEN]: {
-      screen: MainScreen,
-      navigationOptions: () => ({
-        drawerIcon: () => <Image source={require('../../assets/examples-icon.png')} style={styles.icon} />
-      })
-    },
-    [ScreenNames.ABOUT_SCREEN]: {
-      screen: MainScreen,
-      navigationOptions: () => ({
-        drawerIcon: () => <Image source={require('../../assets/about-icon.png')} style={styles.icon} />
-      })
+    [ScreenNames.CODE_SCREEN]: {
+      screen: CodeScreen
     }
   },
-  drawerNavigatorConfig
+  {
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#f4511e'
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold'
+      },
+      headerBackTitle: 'Back'
+    }
+  }
 );
+// DrawerNavigator(
+//   {
+//     [ScreenNames.HOME_SCREEN]: {
+//       screen: StackNav
+//       // navigationOptions: () => ({
+//       //   drawerLabel: () => null
+//       // })
+//     },
+//     [ScreenNames.FILE_OPEN_SCREEN]: {
+//       screen: ChallengeListScreen,
+//       navigationOptions: () => ({
+//         drawerIcon: () => <Image source={require('../../assets/open-icon.png')} style={styles.icon} />
+//       })
+//     },
+//     [ScreenNames.FILE_SAVE_AS_SCREEN]: {
+//       screen: ChallengeListScreen,
+//       navigationOptions: () => ({
+//         drawerIcon: () => <Image source={require('../../assets/save-icon.png')} style={styles.icon} />
+//       })
+//     },
+//     [ScreenNames.EXAMPLES_SCREEN]: {
+//       screen: ChallengeListScreen,
+//       navigationOptions: () => ({
+//         drawerIcon: () => <Image source={require('../../assets/examples-icon.png')} style={styles.icon} />
+//       })
+//     },
+//     [ScreenNames.ABOUT_SCREEN]: {
+//       screen: ChallengeListScreen,
+//       navigationOptions: () => ({
+//         drawerIcon: () => <Image source={require('../../assets/about-icon.png')} style={styles.icon} />
+//       })
+//     }
+//   },
+//   drawerNavigatorConfig
+// );

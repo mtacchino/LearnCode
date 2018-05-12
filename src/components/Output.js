@@ -20,22 +20,33 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     alignSelf: 'flex-end'
+  },
+  runButton: {
+    justifyContent: 'flex-end',
+    alignSelf: 'flex-start'
+  },
+  runImage: {
+    height: 35,
+    width: 35,
+    tintColor: 'green'
   }
 });
 
 const successStyle = StyleSheet.create({
   text: {
-    color: 'black'
+    color: 'black',
+    fontSize: 15
   }
 });
 
 const errorStyle = StyleSheet.create({
   text: {
-    color: 'darkred'
+    color: 'darkred',
+    fontSize: 15
   }
 });
 
-const Output = ({ output, onClearOutput }) => (
+const Output = ({ output, onClearOutput, runCode }) => (
   <View style={styles.container}>
     <View style={styles.output}>
       <ScrollView>
@@ -51,11 +62,14 @@ const Output = ({ output, onClearOutput }) => (
           : null}
       </ScrollView>
     </View>
-    <View style={styles.trashContainer}>
+    <TouchableOpacity style={styles.runButton} onPress={() => runCode()}>
+      <Image style={styles.runImage} source={require('../../assets/run.png')} />
+    </TouchableOpacity>
+    {/* <View style={styles.trashContainer}>
       <TouchableOpacity onPress={() => onClearOutput()}>
         <Image style={styles.trashImage} source={require('../../assets/delete.png')} />
       </TouchableOpacity>
-    </View>
+    </View> */}
   </View>
 );
 

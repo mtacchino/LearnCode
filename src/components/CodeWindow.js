@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet,
+import {
+  StyleSheet,
   View,
   Keyboard,
   TouchableWithoutFeedback,
+  TouchableOpacity,
+  Image,
   KeyboardAvoidingView,
   StatusBar,
   AsyncStorage
@@ -31,19 +34,20 @@ const styles = StyleSheet.create({
     flex: 1
   },
   editorWrapper: {
-    flex: 2,
-    alignSelf: 'stretch'
+    flex: 3
   },
   outputWrapper: {
-    backgroundColor: '#fff'
-  }
+    backgroundColor: '#fff',
+    flex: 1,
+    flexDirection: 'row'
+  },
+  output: {}
 });
 
-export class MainScreen extends Component {
+export class CodeScreen extends Component {
   state = {
-    code: '',
-    output: [],
-    outputHeight: 200
+    code: this.props.code,
+    output: []
   };
 
   handleCodeChange = code => {
@@ -116,7 +120,7 @@ export class MainScreen extends Component {
       message.forEach((m, index) => {
         str += `${this.formatConsoleMessage(m)}`;
         if (index < message.length - 1) {
-          str += ', '
+          str += ', ';
         }
       });
       return str + ']';
@@ -125,24 +129,17 @@ export class MainScreen extends Component {
       Object.keys(message).forEach((key, index) => {
         str += `"${key}": ${this.formatConsoleMessage(message[key])}`;
         if (index < Object.keys(message).length - 1) {
-          str += ', '
+          str += ', ';
         }
       });
       return str + '}';
     } else {
       return typeof message === 'string' ? `"${message}"` : String(message);
     }
-  }
+  };
 
   componentWillMount() {
-    let keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', event => {
-      this.setState({
-        outputHeight: event.endCoordinates.height
-      });
-      keyboardDidShowListener.remove();
-    });
-
-    this.loadDraft();
+    // this.loadDraft();
   }
 
   async loadDraft() {
@@ -152,56 +149,51 @@ export class MainScreen extends Component {
         code: draftCode || defaultCode
       });
     } catch (error) {
-      console.log('Could not retrieve from local storage. Get default code: ', error)      
+      console.log('Could not retrieve from local storage. Get default code: ', error);
       this.setState({
         code: defaultCode
       });
     }
   }
 
-  renderModal() {
-    switch (this.props.navigation && this.props.navigation.state && this.props.navigation.state.routeName) {
-      case ScreenNames.EXAMPLES_SCREEN:
-        return <ExamplesModal onClose={this.hideModal} generateCode={this.generateCode} />;
-      case ScreenNames.ABOUT_SCREEN:
-        return <AboutModal onClose={this.hideModal} />;
-      case ScreenNames.FILE_SAVE_AS_SCREEN:
-        return <FileSaveModal onClose={this.hideModal} fileContents={this.state.code} />;
-      case ScreenNames.FILE_OPEN_SCREEN:
-        return <FileOpenModal onClose={this.hideModal} generateCode={this.generateCode} />;
-      default:
-        return null;
-    }
-  }
-  hideModal = () => {
-    this.props.navigation.goBack();
-  };
+  // renderModal() {
+  //   switch (this.props.navigation && this.props.navigation.state && this.props.navigation.state.routeName) {
+  //     case ScreenNames.EXAMPLES_SCREEN:
+  //       return <ExamplesModal onClose={this.hideModal} generateCode={this.generateCode} />;
+  //     case ScreenNames.ABOUT_SCREEN:
+  //       return <AboutModal onClose={this.hideModal} />;
+  //     case ScreenNames.FILE_SAVE_AS_SCREEN:
+  //       return <FileSaveModal onClose={this.hideModal} fileContents={this.state.code} />;
+  //     case ScreenNames.FILE_OPEN_SCREEN:
+  //       return <FileOpenModal onClose={this.hideModal} generateCode={this.generateCode} />;
+  //     default:
+  //       return null;
+  //   }
+  // }
+  // hideModal = () => {
+  //   this.props.navigation.goBack();
+  // };
 
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="light-content" />
+        {/* <HeaderBar runCode={this.runCode} code={this.state.code} /> BAD STYLES */}
+        <StatusBar barStyle="dark-content" />
         <View style={styles.screenContainer}>
           <View style={styles.editorWrapper}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
               <View>
-                <HeaderBar navigation={this.props.navigation} runCode={this.runCode} code={this.state.code} />
-                {this.renderModal()}
-                <KeyboardAvoidingView behavior="height">
-                  <CodeEditor code={this.state.code} handleCodeChange={this.handleCodeChange} />
-                </KeyboardAvoidingView>
+                <CodeEditor code={this.state.code} handleCodeChange={this.handleCodeChange} />
               </View>
             </TouchableWithoutFeedback>
           </View>
-          <View
-            style={[
-              styles.outputWrapper,
-              {
-                height: this.state.outputHeight
-              }
-            ]}
-          >
-            <Output output={this.state.output} onClearOutput={this.onClearOutput} />
+          <View style={styles.outputWrapper}>
+            <Output
+              style={styles.output}
+              output={this.state.output}
+              onClearOutput={this.onClearOutput}
+              runCode={this.runCode}
+            />
           </View>
         </View>
       </View>
@@ -212,4 +204,4 @@ export class MainScreen extends Component {
 export default connect(null, dispatch => ({
   editCode: () => dispatch(editCode()),
   fileOpenSuccess: (contents, fileName) => dispatch(fileOpenSuccess(contents, fileName))
-}))(MainScreen);
+}))(CodeScreen);
